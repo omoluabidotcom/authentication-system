@@ -1,2 +1,4 @@
-package com.authenticationapplication.service;public interface UserService {
+package com.authenticationapplication.service;
+
+public interface UserService {
 }
