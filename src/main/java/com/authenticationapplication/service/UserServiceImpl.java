@@ -1,8 +1,10 @@
 package com.authenticationapplication.service;
 
 import com.authenticationapplication.entity.User;
+import com.authenticationapplication.entity.VerificationToken;
 import com.authenticationapplication.model.UserModel;
 import com.authenticationapplication.repository.UserRepository;
+import com.authenticationapplication.repository.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private VerificationRepository verificationRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,4 +33,11 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
         return user;
     }
+
+    @Override
+    public void saveVerificationToken(User user, String token) {
+        VerificationToken verificationToken = new VerificationToken(user, token);
+        verificationRepository.save(verificationToken);
+    }
+
 }
