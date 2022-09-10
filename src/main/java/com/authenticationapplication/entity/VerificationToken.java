@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class VerificationToken {
 
-    private static final int EXPIRATION_TIME = 0;
+    private static final int EXPIRATION_TIME = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class VerificationToken {
     private Date expirationTime;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "name_id",
+    @JoinColumn(name = "user_id",
                 nullable = false,
                 foreignKey = @ForeignKey(name = "FK_USER_VERIFY_TOKEN"))
     private User user;

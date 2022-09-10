@@ -19,14 +19,4 @@ public class RegistrationEventPublisher extends ApplicationEvent {
         this.user = user;
         this.regURL = regURL;
     }
-
-
-    public String getApplicationUrl(HttpServletRequest request) {
-
-        return  "http://"+
-                request.getServerName()+
-                ":"+
-                request.getServerPort()+
-                request.getContextPath();
-    }
 }

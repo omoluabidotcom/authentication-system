@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Component
@@ -26,9 +25,7 @@ public class RegistrationEventListener implements ApplicationListener<Registrati
         String token = UUID.randomUUID().toString();
         userService.saveVerificationToken(user, token);
 
-        final HttpServletRequest request = null;
-
-        String url = event.getApplicationUrl(request)+"verification"+token;
+        String url = event.getRegURL()+"verification"+token;
 
         log.info("You click the link to confirm email", url);
     }
