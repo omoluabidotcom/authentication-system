@@ -6,9 +6,7 @@ import com.authenticationapplication.model.UserModel;
 import com.authenticationapplication.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +24,16 @@ public class RegistrationController {
         User user = userService.registerNewUser(userModel);
         applicationEventPublisher.publishEvent(new RegistrationEventPublisher(user, applicationUrl(request)));
         return "success";
+    }
+
+    @GetMapping("/verification")
+    public String verifyUser(@RequestParam("token") String token) {
+        String result = userService.confirmUser(token);
+
+        if(result.equals("Valid")) {
+            return "User verified";
+        }
+        return "Bad User";
     }
 
     private String applicationUrl(HttpServletRequest request) {

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -38,6 +40,28 @@ public class UserServiceImpl implements UserService{
     public void saveVerificationToken(User user, String token) {
         VerificationToken verificationToken = new VerificationToken(user, token);
         verificationRepository.save(verificationToken);
+    }
+
+    @Override
+    public String confirmUser(String token) {
+
+        VerificationToken verifiedUser = verificationRepository.findByToken(token);
+
+        if(verifiedUser == null) {
+            return "Invalid";
+        }
+
+        User user = verifiedUser.getUser();
+        Calendar cal = Calendar.getInstance();
+
+        if((verifiedUser.getExpirationTime().getTime() - cal.getTime().getTime()) <=0) {
+            verificationRepository.delete(verifiedUser);
+            return "Expired";
+        }
+
+        user.setEnabled(true);
+        userRepository.save(user);
+        return "Valid";
     }
 
 }
