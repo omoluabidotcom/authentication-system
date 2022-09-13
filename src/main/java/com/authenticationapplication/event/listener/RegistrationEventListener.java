@@ -25,8 +25,8 @@ public class RegistrationEventListener implements ApplicationListener<Registrati
         String token = UUID.randomUUID().toString();
         userService.saveVerificationToken(user, token);
 
-        String url = event.getRegURL()+"verification"+token;
+        String url = event.getRegURL()+"/verification?token="+token;
 
-        log.info("You click the link to confirm email", url);
+        log.info("Click this link to confirm email {}", url);
     }
 }
