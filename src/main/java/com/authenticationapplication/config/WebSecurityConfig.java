@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private static final String[] WHITE_LIST_URLS = {"/register"};
+    private static final String[] WHITE_LIST_URLS = {"/register", "/verification*", "/resendverificationtoken*"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
