@@ -1,9 +1,11 @@
 package com.authenticationapplication.controller;
 
 import com.authenticationapplication.entity.User;
+import com.authenticationapplication.entity.VerificationToken;
 import com.authenticationapplication.event.RegistrationEventPublisher;
 import com.authenticationapplication.model.UserModel;
 import com.authenticationapplication.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Slf4j
 public class RegistrationController {
 
     @Autowired
@@ -36,13 +39,26 @@ public class RegistrationController {
         return "Bad User";
     }
 
-    private String applicationUrl(HttpServletRequest request) {
+    @GetMapping("/resendverificationtoken")
+    public String generateNewVerificationToken(@RequestParam("token") String token, HttpServletRequest request) {
+        VerificationToken verificationToken = userService.generateVerificationToken(token);
+        User user = verificationToken.getUser();
+        generateNewVerificationMail(user, applicationUrl(request), verificationToken);
+        return "Verification link sent";
+    }
 
+    private String applicationUrl(HttpServletRequest request) {
         return  "http://"+
                 request.getServerName()+
                 ":"+
                 request.getServerPort()+
                 request.getContextPath();
+    }
+
+    public void generateNewVerificationMail(User user, String applicationurl, VerificationToken token) {
+        String url = applicationurl+"/verification?token="+token.getToken();
+
+        log.info("Click this link to confirm email {}", url);
     }
 
 }
