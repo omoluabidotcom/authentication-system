@@ -1,11 +1,10 @@
 package com.authenticationapplication.repository;
 
-import com.authenticationapplication.entity.User;
+import com.authenticationapplication.entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository
-        extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+public interface PasswordResetTokenRepository
+        extends JpaRepository<PasswordResetToken, Long> {
 }

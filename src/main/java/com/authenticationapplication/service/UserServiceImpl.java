@@ -1,8 +1,10 @@
 package com.authenticationapplication.service;
 
+import com.authenticationapplication.entity.PasswordResetToken;
 import com.authenticationapplication.entity.User;
 import com.authenticationapplication.entity.VerificationToken;
 import com.authenticationapplication.model.UserModel;
+import com.authenticationapplication.repository.PasswordResetTokenRepository;
 import com.authenticationapplication.repository.UserRepository;
 import com.authenticationapplication.repository.VerificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private VerificationRepository verificationRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -71,6 +76,18 @@ public class UserServiceImpl implements UserService{
         verificationToken.setToken(UUID.randomUUID().toString());
         verificationRepository.save(verificationToken);
         return verificationToken;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
+
+    @Override
+    public void createPasswordResetToken(User user, String token) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken(user, token);
+        passwordResetTokenRepository.save(passwordResetToken);
     }
 
 }
