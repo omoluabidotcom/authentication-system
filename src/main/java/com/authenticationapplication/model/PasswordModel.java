@@ -6,4 +6,6 @@ import lombok.Data;
 public class PasswordModel {
 
     private String email;
+    private String newPassword;
+    private String oldPassword;
 }

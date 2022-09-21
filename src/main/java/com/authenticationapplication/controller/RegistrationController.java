@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -61,10 +62,24 @@ public class RegistrationController {
         return url;
     }
 
+    @PostMapping("/savepassword")
+    public String savePassword(@RequestParam("token") String token, @RequestBody PasswordModel passwordModel) {
+        String result = userService.findPasswordByResetToken(token);
+
+        if(!result.equalsIgnoreCase("Valid")) {
+            return "Invalid Token";
+        }
+
+        Optional<User> user = userService.getUserByPasswordResetToken(token);
+        userService.changePassword(user.get(), passwordModel.getNewPassword());
+        return "Password change successfully";
+    }
+
     private String resetPasswordTokenMail(User user, String applicationUrl, String token) {
         String url = applicationUrl+"/savepassword?token="+token;
 
-        log.info("Click this link to confirm email {}", url);
+        log.info("Click this link to reset password {}", url);
+        return url;
     }
 
     private String applicationUrl(HttpServletRequest request) {
@@ -78,7 +93,7 @@ public class RegistrationController {
     public void generateNewVerificationMail(User user, String applicationurl, VerificationToken token) {
         String url = applicationurl+"/verification?token="+token.getToken();
 
-        log.info("Click this link to confirm email {}", url);
+        log.info("Click this link to send another verification mail {}", url);
     }
 
 }
