@@ -1,2 +1,13 @@
-package main.java.com.authenticationproject.OAuthserver.config;public class AuthorizationServerConfig {
+package com.authenticationproject.OAuthserver.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration(proxyBeanMethods = false)
+public class AuthorizationServerConfig {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 }
