@@ -1,4 +1,4 @@
-package com.authenticationapplication.entity;
+package com.authenticationproject.OAuthserver.entity;
 
 import lombok.Data;
 
